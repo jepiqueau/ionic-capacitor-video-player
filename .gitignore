@@ -10,6 +10,7 @@ log.txt
 *.sublime-project
 *.sublime-workspace
 .vscode/
+.gradle/
 npm-debug.log*
 
 .idea/
@@ -21,6 +22,9 @@ npm-debug.log*
 coverage/
 www/
 node_modules/
+android/
+electron/
+ios/
 tmp/
 temp/
 platforms/
@@ -28,6 +32,7 @@ plugins/
 plugins/android.json
 plugins/ios.json
 $RECYCLE.BIN/
+capacitor.config.json
 
 .DS_Store
 Thumbs.db
