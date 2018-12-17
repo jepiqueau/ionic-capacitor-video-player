@@ -90,6 +90,14 @@ and make Update when asked
 
 When all this is done and your buid is succesful, click on the run project button and select your device or emulator, the application will launch and display four buttons.
 
+### running on Web
+
+```bash
+npx cap copy web
+ng serve
+``` 
+
+open your browser on http://localhost:4200/
 
 ### In the App
 
