@@ -9,7 +9,7 @@ Example of a Ionic Application to test and validate the Capacitor Video Player P
 clone this repo to a new directory:
 
 ```bash
-git clone https://github.com/jepiqueau/ionic-capacitor-videi-player.git ionic-capacitor-video-player
+git clone https://github.com/jepiqueau/ionic-capacitor-video-player.git ionic-capacitor-video-player
 cd ionic-capacitor-video-player
 git remote rm origin
 npm install
