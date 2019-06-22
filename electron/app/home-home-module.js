@@ -2211,6 +2211,16 @@ class CapacitorVideoPlayerWeb extends _capacitor_core__WEBPACK_IMPORTED_MODULE_0
             return Promise.resolve({ result: result });
         });
     }
+    _doHide(duration) {
+        return __awaiter(this, void 0, void 0, function* () {
+            clearTimeout(this._initial);
+            this._exitEl.style.visibility = "visible";
+            let initial = setTimeout(() => {
+                this._exitEl.style.visibility = "hidden";
+            }, duration);
+            return initial;
+        });
+    }
     _initializeVideoPlayer(url) {
         return __awaiter(this, void 0, void 0, function* () {
             // encode the url
@@ -2228,7 +2238,7 @@ class CapacitorVideoPlayerWeb extends _capacitor_core__WEBPACK_IMPORTED_MODULE_0
             this._container.style.alignItems = 'center';
             this._container.style.justifyContent = 'center';
             this._container.style.backgroundColor = '#000000';
-            this._container.style.zIndex = '99997';
+            this._container.style.zIndex = '99996';
             document.body.appendChild(this._container);
             // create a video container
             const width = this._container.offsetWidth;
@@ -2239,7 +2249,7 @@ class CapacitorVideoPlayerWeb extends _capacitor_core__WEBPACK_IMPORTED_MODULE_0
             svg.setAttributeNS(null, 'height', height.toString());
             const viewbox = '0 0 ' + width.toString() + ' ' + height.toString();
             svg.setAttributeNS(null, 'viewBox', viewbox);
-            svg.style.zIndex = '99998';
+            svg.style.zIndex = '99997';
             const rect = document.createElementNS(xmlns, 'rect');
             rect.setAttributeNS(null, "x", "0");
             rect.setAttributeNS(null, "y", "0");
@@ -2254,34 +2264,62 @@ class CapacitorVideoPlayerWeb extends _capacitor_core__WEBPACK_IMPORTED_MODULE_0
             this._videoContainer.style.left = "0";
             this._videoContainer.style.width = width.toString() + 'px';
             this._videoContainer.style.height = heightVideo.toString() + 'px';
-            this._videoContainer.style.zIndex = '99999';
+            this._videoContainer.style.zIndex = '99998';
             this._container.appendChild(this._videoContainer);
             // create the video player
             this._videoEl = document.createElement('video');
             this._videoEl.controls = true;
             this._videoEl.src = this._url;
             this._videoEl.style.width = "100%";
-            /*
-            this._videoEl.onplay = () => {
-              if(!this._videoEl.webkitDisplayingFullscreen) this._videoEl.webkitEnterFullscreen();
-              this._videoEl.webkitEnterFullscreen();
-            };
-            */
+            this._videoEl.style.zIndex = '99998';
+            //
+            // create the video player exit button
+            this._exitEl = document.createElement('button');
+            this._exitEl.textContent = "X";
+            this._exitEl.style.position = 'absolute';
+            this._exitEl.style.left = "1%";
+            this._exitEl.style.top = "5%";
+            this._exitEl.style.width = "3%";
+            this._exitEl.style.padding = "0.5%";
+            this._exitEl.style.fontSize = "1.2rem";
+            this._exitEl.style.background = "rgba(51,51,51,.4)";
+            this._exitEl.style.color = "#fff";
+            this._exitEl.style.visibility = "hidden";
+            this._exitEl.style.zIndex = '99999';
+            this._exitEl.style.border = "1px solid rgba(51,51,51,.4)";
+            this._exitEl.style.borderRadius = "20px";
+            this._videoEl.onclick = () => __awaiter(this, void 0, void 0, function* () {
+                this._initial = yield this._doHide(3000);
+            });
+            this._videoEl.ontouchstart = () => __awaiter(this, void 0, void 0, function* () {
+                this._initial = yield this._doHide(3000);
+            });
+            this._videoEl.onmousemove = () => __awaiter(this, void 0, void 0, function* () {
+                this._initial = yield this._doHide(3000);
+            });
             this._videoEl.onended = () => {
                 this._container.remove();
             };
+            this._exitEl.onclick = () => {
+                this._container.remove();
+            };
+            this._exitEl.ontouchstart = () => {
+                this._container.remove();
+            };
             yield this._videoContainer.appendChild(this._videoEl);
-            if (this._videoEl.requestFullscreen) {
-                this._videoEl.requestFullscreen();
+            yield this._videoContainer.appendChild(this._exitEl);
+            this._initial = yield this._doHide(3000);
+            if (this._videoContainer.requestFullscreen) {
+                this._videoContainer.requestFullscreen();
             }
-            else if (this._videoEl.mozRequestFullScreen) { /* Firefox */
-                this._videoEl.mozRequestFullScreen();
+            else if (this._videoContainer.mozRequestFullScreen) { /* Firefox */
+                this._videoContainer.mozRequestFullScreen();
             }
-            else if (this._videoEl.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
-                this._videoEl.webkitRequestFullscreen();
+            else if (this._videoContainer.webkitRequestFullscreen) { /* Chrome, Safari & Opera */
+                this._videoContainer.webkitRequestFullscreen();
             }
-            else if (this._videoEl.msRequestFullscreen) { /* IE/Edge */
-                this._videoEl.msRequestFullscreen();
+            else if (this._videoContainer.msRequestFullscreen) { /* IE/Edge */
+                this._videoContainer.msRequestFullscreen();
             }
             this._videoEl.play();
             return Promise.resolve(true);
@@ -2975,14 +3013,18 @@ var CameraPluginWeb = /** @class */ (function (_super) {
                                                     photo = e.detail;
                                                     if (!(photo === null)) return [3 /*break*/, 1];
                                                     reject('User cancelled photos app');
-                                                    return [3 /*break*/, 3];
+                                                    return [3 /*break*/, 4];
                                                 case 1:
+                                                    if (!(photo instanceof Error)) return [3 /*break*/, 2];
+                                                    reject(photo.message);
+                                                    return [3 /*break*/, 4];
+                                                case 2:
                                                     _a = resolve;
                                                     return [4 /*yield*/, this._getCameraPhoto(photo, options)];
-                                                case 2:
-                                                    _a.apply(void 0, [_b.sent()]);
-                                                    _b.label = 3;
                                                 case 3:
+                                                    _a.apply(void 0, [_b.sent()]);
+                                                    _b.label = 4;
+                                                case 4:
                                                     cameraModal.dismiss();
                                                     document.body.removeChild(cameraModal);
                                                     return [2 /*return*/];
@@ -3675,6 +3717,185 @@ var FilesystemPluginWeb = /** @class */ (function (_super) {
                                 mtime: entry.mtime,
                                 uri: entry.path
                             }];
+                }
+            });
+        });
+    };
+    /**
+     * Rename a file or directory
+     * @param options the options for the rename operation
+     * @return a promise that resolves with the rename result
+     */
+    FilesystemPluginWeb.prototype.rename = function (options) {
+        return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
+            var to, from, directory, toObj, e_1, toPathComponents, toPath, toParentDirectory, fromObj, updateTime, _a, file, e_2, contents, _i, contents_1, filename;
+            var _this = this;
+            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_b) {
+                switch (_b.label) {
+                    case 0:
+                        to = options.to, from = options.from, directory = options.directory;
+                        if (!to || !from) {
+                            throw Error('Both to and from must be provided');
+                        }
+                        // Test that the "to" and "from" locations are different
+                        if (from === to) {
+                            return [2 /*return*/, {}];
+                        }
+                        if (to.startsWith(from)) {
+                            throw Error('To path cannot contain the from path');
+                        }
+                        _b.label = 1;
+                    case 1:
+                        _b.trys.push([1, 3, , 6]);
+                        return [4 /*yield*/, this.stat({
+                                path: to,
+                                directory: directory
+                            })];
+                    case 2:
+                        toObj = _b.sent();
+                        return [3 /*break*/, 6];
+                    case 3:
+                        e_1 = _b.sent();
+                        toPathComponents = to.split('/');
+                        toPathComponents.pop();
+                        toPath = toPathComponents.join('/');
+                        if (!(toPathComponents.length > 0)) return [3 /*break*/, 5];
+                        return [4 /*yield*/, this.stat({
+                                path: toPath,
+                                directory: directory,
+                            })];
+                    case 4:
+                        toParentDirectory = _b.sent();
+                        if (toParentDirectory.type !== 'directory') {
+                            throw new Error('Parent directory of the to path is a file');
+                        }
+                        _b.label = 5;
+                    case 5: return [3 /*break*/, 6];
+                    case 6:
+                        // Cannot overwrite a directory
+                        if (toObj && toObj.type === 'directory') {
+                            throw new Error('Cannot overwrite a directory with a file');
+                        }
+                        return [4 /*yield*/, this.stat({
+                                path: from,
+                                directory: directory
+                            })];
+                    case 7:
+                        fromObj = _b.sent();
+                        updateTime = function (path, ctime, mtime) { return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](_this, void 0, void 0, function () {
+                            var fullPath, entry;
+                            return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
+                                switch (_a.label) {
+                                    case 0:
+                                        fullPath = this.getPath(directory, path);
+                                        return [4 /*yield*/, this.dbRequest('get', [fullPath])];
+                                    case 1:
+                                        entry = _a.sent();
+                                        entry.ctime = ctime;
+                                        entry.mtime = mtime;
+                                        return [4 /*yield*/, this.dbRequest('put', [entry])];
+                                    case 2:
+                                        _a.sent();
+                                        return [2 /*return*/];
+                                }
+                            });
+                        }); };
+                        _a = fromObj.type;
+                        switch (_a) {
+                            case 'file': return [3 /*break*/, 8];
+                            case 'directory': return [3 /*break*/, 13];
+                        }
+                        return [3 /*break*/, 25];
+                    case 8: return [4 /*yield*/, this.readFile({
+                            path: from,
+                            directory: directory
+                        })];
+                    case 9:
+                        file = _b.sent();
+                        // Remove the file
+                        return [4 /*yield*/, this.deleteFile({
+                                path: from,
+                                directory: directory
+                            })];
+                    case 10:
+                        // Remove the file
+                        _b.sent();
+                        // Write the file to the new location
+                        return [4 /*yield*/, this.writeFile({
+                                path: to,
+                                directory: directory,
+                                data: file.data
+                            })];
+                    case 11:
+                        // Write the file to the new location
+                        _b.sent();
+                        // Copy the mtime/ctime of the original file
+                        return [4 /*yield*/, updateTime(to, fromObj.ctime, fromObj.mtime)];
+                    case 12:
+                        // Copy the mtime/ctime of the original file
+                        _b.sent();
+                        // Resolve promise
+                        return [2 /*return*/, {}];
+                    case 13:
+                        if (toObj) {
+                            throw Error('Cannot move a directory over an existing object');
+                        }
+                        _b.label = 14;
+                    case 14:
+                        _b.trys.push([14, 17, , 18]);
+                        // Create the to directory
+                        return [4 /*yield*/, this.mkdir({
+                                path: to,
+                                directory: directory,
+                                createIntermediateDirectories: false,
+                            })];
+                    case 15:
+                        // Create the to directory
+                        _b.sent();
+                        // Copy the mtime/ctime of the original directory
+                        return [4 /*yield*/, updateTime(to, fromObj.ctime, fromObj.mtime)];
+                    case 16:
+                        // Copy the mtime/ctime of the original directory
+                        _b.sent();
+                        return [3 /*break*/, 18];
+                    case 17:
+                        e_2 = _b.sent();
+                        return [3 /*break*/, 18];
+                    case 18: return [4 /*yield*/, this.readdir({
+                            path: from,
+                            directory: directory
+                        })];
+                    case 19:
+                        contents = (_b.sent()).files;
+                        _i = 0, contents_1 = contents;
+                        _b.label = 20;
+                    case 20:
+                        if (!(_i < contents_1.length)) return [3 /*break*/, 23];
+                        filename = contents_1[_i];
+                        // Move item from the from directory to the to directory
+                        return [4 /*yield*/, this.rename({
+                                from: from + "/" + filename,
+                                to: to + "/" + filename,
+                                directory: directory,
+                            })];
+                    case 21:
+                        // Move item from the from directory to the to directory
+                        _b.sent();
+                        _b.label = 22;
+                    case 22:
+                        _i++;
+                        return [3 /*break*/, 20];
+                    case 23: 
+                    // Remove the original from directory
+                    return [4 /*yield*/, this.rmdir({
+                            path: from,
+                            directory: directory
+                        })];
+                    case 24:
+                        // Remove the original from directory
+                        _b.sent();
+                        _b.label = 25;
+                    case 25: return [2 /*return*/, {}];
                 }
             });
         });
@@ -4534,36 +4755,33 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "HomePage", function() { return HomePage; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm5/core.js");
-/* harmony import */ var _ionic_angular__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @ionic/angular */ "./node_modules/@ionic/angular/dist/fesm5.js");
-/* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @capacitor/core */ "./node_modules/@capacitor/core/dist/esm/index.js");
-/* harmony import */ var capacitor_video_player__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! capacitor-video-player */ "./node_modules/capacitor-video-player/dist/esm/index.js");
+/* harmony import */ var _capacitor_core__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @capacitor/core */ "./node_modules/@capacitor/core/dist/esm/index.js");
+/* harmony import */ var capacitor_video_player__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! capacitor-video-player */ "./node_modules/capacitor-video-player/dist/esm/index.js");
 
 
 
 
-
+var CapacitorVideoPlayer = _capacitor_core__WEBPACK_IMPORTED_MODULE_2__["Plugins"].CapacitorVideoPlayer, Device = _capacitor_core__WEBPACK_IMPORTED_MODULE_2__["Plugins"].Device;
 var HomePage = /** @class */ (function () {
-    function HomePage(platform) {
-        this.platform = platform;
+    function HomePage() {
     }
     HomePage.prototype.testPlugin = function () {
         return tslib__WEBPACK_IMPORTED_MODULE_0__["__awaiter"](this, void 0, void 0, function () {
-            var videoPlayer, CapacitorVideoPlayer_1, res;
+            var videoPlayer, info, res;
             return tslib__WEBPACK_IMPORTED_MODULE_0__["__generator"](this, function (_a) {
                 switch (_a.label) {
-                    case 0:
-                        if (this.platform.is('ios') || this.platform.is('android')) {
-                            CapacitorVideoPlayer_1 = _capacitor_core__WEBPACK_IMPORTED_MODULE_3__["Plugins"].CapacitorVideoPlayer;
-                            videoPlayer = CapacitorVideoPlayer_1;
-                            console.log('in ios or android');
+                    case 0: return [4 /*yield*/, Device.getInfo()];
+                    case 1:
+                        info = _a.sent();
+                        if (info.platform === "ios" || info.platform === "android") {
+                            videoPlayer = CapacitorVideoPlayer;
                         }
                         else {
-                            videoPlayer = capacitor_video_player__WEBPACK_IMPORTED_MODULE_4__["CapacitorVideoPlayer"];
+                            videoPlayer = capacitor_video_player__WEBPACK_IMPORTED_MODULE_3__["CapacitorVideoPlayer"];
                         }
                         return [4 /*yield*/, videoPlayer.play({ url: "https://clips.vorwaerts-gmbh.de/VfE_html5.mp4" })];
-                    case 1:
+                    case 2:
                         res = _a.sent();
-                        console.log('result of echo ', res);
                         return [2 /*return*/];
                 }
             });
@@ -4575,7 +4793,7 @@ var HomePage = /** @class */ (function () {
             template: __webpack_require__(/*! ./home.page.html */ "./src/app/home/home.page.html"),
             styles: [__webpack_require__(/*! ./home.page.scss */ "./src/app/home/home.page.scss")]
         }),
-        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [_ionic_angular__WEBPACK_IMPORTED_MODULE_2__["Platform"]])
+        tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
     ], HomePage);
     return HomePage;
 }());
