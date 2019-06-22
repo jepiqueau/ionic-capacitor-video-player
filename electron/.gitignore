@@ -2,12 +2,5 @@
 # In order to prevent that, we remove the initial "."
 # And the CLI then renames it
 
-App/build
-App/Pods
-App/public
-App/Podfile.lock
-xcuserdata
-
-# Cordova plugins for Capacitor
-capacitor-cordova-ios-plugins
-
+app/
+node_modules/
