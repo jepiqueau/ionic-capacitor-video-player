@@ -2,7 +2,7 @@ PODS:
   - Capacitor (1.1.0):
     - CapacitorCordova (= 1.1.0)
   - CapacitorCordova (1.1.0)
-  - CapacitorVideoPlayer (1.1.0-beta.1):
+  - CapacitorVideoPlayer (1.1.0):
     - Capacitor
 
 DEPENDENCIES:
@@ -21,7 +21,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   Capacitor: 1e4b4f057fe6c727575a90cc640fbf6aa019a017
   CapacitorCordova: 49e84a6ab0ff82f00667bd27bb3c0e98bafea445
-  CapacitorVideoPlayer: a6972c6e25fa0c77002d34088ef4bd4caa0bf57c
+  CapacitorVideoPlayer: b142601f722ddfd2984c47d8191d437e871321ae
 
 PODFILE CHECKSUM: cb42d3ab755b5b3abae7c27043c8d2a8a7d295b6
 
