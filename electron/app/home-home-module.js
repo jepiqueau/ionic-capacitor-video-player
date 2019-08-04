@@ -547,13 +547,15 @@ __webpack_require__.r(__webpack_exports__);
 var AppPluginWeb = /** @class */ (function (_super) {
     tslib__WEBPACK_IMPORTED_MODULE_0__["__extends"](AppPluginWeb, _super);
     function AppPluginWeb() {
-        return _super.call(this, {
+        var _this = _super.call(this, {
             name: 'App',
             platforms: ['web']
         }) || this;
+        document.addEventListener('visibilitychange', _this.handleVisibilityChange.bind(_this), false);
+        return _this;
     }
     AppPluginWeb.prototype.exitApp = function () {
-        throw new Error("Method not implemented.");
+        throw new Error('Method not implemented.');
     };
     AppPluginWeb.prototype.canOpenUrl = function (_options) {
         return Promise.resolve({ value: true });
@@ -563,6 +565,12 @@ var AppPluginWeb = /** @class */ (function (_super) {
     };
     AppPluginWeb.prototype.getLaunchUrl = function () {
         return Promise.resolve({ url: '' });
+    };
+    AppPluginWeb.prototype.handleVisibilityChange = function () {
+        var data = {
+            isActive: document.hidden !== true
+        };
+        this.notifyListeners('appStateChange', data);
     };
     return AppPluginWeb;
 }(_index__WEBPACK_IMPORTED_MODULE_1__["WebPlugin"]));
@@ -2517,6 +2525,17 @@ Object(_capacitor_core__WEBPACK_IMPORTED_MODULE_0__["registerWebPlugin"])(Capaci
 
 /***/ }),
 
+/***/ "./node_modules/raw-loader/index.js!./src/app/home/home.page.html":
+/*!***************************************************************!*\
+  !*** ./node_modules/raw-loader!./src/app/home/home.page.html ***!
+  \***************************************************************/
+/*! no static exports found */
+/***/ (function(module, exports) {
+
+module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Ionic Blank\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <div class=\"ion-padding\">\n    The world is your oyster.\n    <p>If you get lost, the <a target=\"_blank\" rel=\"noopener\" href=\"https://ionicframework.com/docs/\">docs</a> will be your guide.</p>\n    <ion-button (click)=\"testPlugin()\" color='primary' size=\"large\">Test Video PlayerPlugin</ion-button>\n  </div>\n</ion-content>\n"
+
+/***/ }),
+
 /***/ "./src/app/home/home.module.ts":
 /*!*************************************!*\
   !*** ./src/app/home/home.module.ts ***!
@@ -2564,17 +2583,6 @@ var HomePageModule = /** @class */ (function () {
 }());
 
 
-
-/***/ }),
-
-/***/ "./src/app/home/home.page.html":
-/*!*************************************!*\
-  !*** ./src/app/home/home.page.html ***!
-  \*************************************/
-/*! no static exports found */
-/***/ (function(module, exports) {
-
-module.exports = "<ion-header>\n  <ion-toolbar>\n    <ion-title>\n      Ionic Blank\n    </ion-title>\n  </ion-toolbar>\n</ion-header>\n\n<ion-content>\n  <div class=\"ion-padding\">\n    The world is your oyster.\n    <p>If you get lost, the <a target=\"_blank\" rel=\"noopener\" href=\"https://ionicframework.com/docs/\">docs</a> will be your guide.</p>\n    <ion-button (click)=\"testPlugin()\" color='primary' size=\"large\">Test Video PlayerPlugin</ion-button>\n  </div>\n</ion-content>\n"
 
 /***/ }),
 
@@ -2636,7 +2644,7 @@ var HomePage = /** @class */ (function () {
     HomePage = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Component"])({
             selector: 'app-home',
-            template: __webpack_require__(/*! ./home.page.html */ "./src/app/home/home.page.html"),
+            template: __webpack_require__(/*! raw-loader!./home.page.html */ "./node_modules/raw-loader/index.js!./src/app/home/home.page.html"),
             styles: [__webpack_require__(/*! ./home.page.scss */ "./src/app/home/home.page.scss")]
         }),
         tslib__WEBPACK_IMPORTED_MODULE_0__["__metadata"]("design:paramtypes", [])
