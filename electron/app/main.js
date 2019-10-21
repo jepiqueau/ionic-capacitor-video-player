@@ -676,7 +676,7 @@ Object(_angular_platform_browser_dynamic__WEBPACK_IMPORTED_MODULE_1__["platformB
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(/*! /Users/queaujeanpierre/Documents/ProjectswithCapacitor/publishProjects/ionic4-capacitor-apps/one/ionic-capacitor-video-player/src/main.ts */"./src/main.ts");
+module.exports = __webpack_require__(/*! /Users/queaujeanpierre/Documents/ProjectswithCapacitor/publishProjects/ionic4-capacitor-apps/ionic-capacitor-video-player/src/main.ts */"./src/main.ts");
 
 
 /***/ })

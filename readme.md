@@ -50,6 +50,8 @@ Xcode will be opened with your project and will index the files. When completed,
 
 ### running on Android
 
+!!! For video from asset folder. You must create a raw folder under the res folder of your Android App and copy the video in that folder
+
 ```bash
 npx cap open android
 ``` 
