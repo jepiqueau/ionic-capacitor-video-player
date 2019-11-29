@@ -1,8 +1,8 @@
 PODS:
-  - Capacitor (1.1.1):
-    - CapacitorCordova (= 1.1.1)
-  - CapacitorCordova (1.1.1)
-  - CapacitorVideoPlayer (1.1.12):
+  - Capacitor (1.3.0):
+    - CapacitorCordova (= 1.3.0)
+  - CapacitorCordova (1.3.0)
+  - CapacitorVideoPlayer (1.1.3-3):
     - Capacitor
 
 DEPENDENCIES:
@@ -19,9 +19,9 @@ EXTERNAL SOURCES:
     :path: "../../node_modules/capacitor-video-player"
 
 SPEC CHECKSUMS:
-  Capacitor: f245413edff86ebf3d18bf76cadaee4be58b4a04
-  CapacitorCordova: 25811fd90c0ea23ea135a42a217d1918873fa566
-  CapacitorVideoPlayer: 312e0169552a265c3c491e5146fce82c1c78b5d0
+  Capacitor: 8be26c1099c8fb157a4eee9feaa6aa05e466d272
+  CapacitorCordova: 8aeaad82ad344af66b02f4660dcf544eec79face
+  CapacitorVideoPlayer: aff668de8342e1c79cdd2aac4dc6e66726462458
 
 PODFILE CHECKSUM: cb42d3ab755b5b3abae7c27043c8d2a8a7d295b6
 

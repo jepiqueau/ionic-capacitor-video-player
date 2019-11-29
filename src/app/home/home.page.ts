@@ -4,6 +4,11 @@ import { Plugins } from '@capacitor/core';
 import * as CapacitorVPPlugin from 'capacitor-video-player';
 
 const { CapacitorVideoPlayer, Device } = Plugins;
+const videoFrom:string = "http";
+/*  comment line above and uncomment line below
+    to use videos from assets
+*/
+//const videoFrom:string = "assets";
 
 @Component({
   selector: 'app-home',
@@ -11,25 +16,37 @@ const { CapacitorVideoPlayer, Device } = Plugins;
   styleUrls: ['home.page.scss'],
 })
 export class HomePage {
+  platform:boolean;
+  private _videoPlayer: any;
+  private _url: string;
   constructor() {
 
   }
-  async testPlugin(){ 
-    let videoPlayer: any;
-    let url:string;
+  async ngAfterViewInit() {
     const info = await Device.getInfo();
     if (info.platform === "ios" || info.platform === "android") {
-      videoPlayer = CapacitorVideoPlayer;
+      this._videoPlayer = CapacitorVideoPlayer;
       if (info.platform === "ios") {
-        url = "public/assets/video/video.mp4"
+        this._url = "public/assets/video/video.mp4"
       } else {
-        url ="raw/video"
+        this._url ="raw/video"
       }
+      this.platform = false;
     } else {
-      videoPlayer = CapacitorVPPlugin.CapacitorVideoPlayer;
-      url = "assets/video/video.mp4"
+      this.platform = true;
+      this._videoPlayer = CapacitorVPPlugin.CapacitorVideoPlayer;
+      this._url = "assets/video/video.mp4";
     }
-    const res:any  = await videoPlayer.play({url:url});
+    if (videoFrom === "http") {
+      this._url = "https://clips.vorwaerts-gmbh.de/VfE_html5.mp4";
+    }
+  }
+  async testPlugin(){ 
+    const info = await Device.getInfo();     
+    document.addEventListener('jeepCapVideoPlayerPlay', (e:CustomEvent) => { console.log('Event jeepCapVideoPlayerPlay ', e.detail)}, false);
+    document.addEventListener('jeepCapVideoPlayerPause', (e:CustomEvent) => { console.log('Event jeepCapVideoPlayerPause ', e.detail)}, false);
+    document.addEventListener('jeepCapVideoPlayerEnded', (e:CustomEvent) => { console.log('Event jeepCapVideoPlayerEnded ', e.detail)}, false);
+    const res:any  = await this._videoPlayer.initPlayer({mode:"fullscreen",url:this._url});
   }
 }
 // "https://clips.vorwaerts-gmbh.de/VfE_html5.mp4"

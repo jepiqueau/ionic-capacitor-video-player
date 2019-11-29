@@ -10,6 +10,7 @@
   <div class="ion-padding">
     The world is your oyster.
     <p>If you get lost, the <a target="_blank" rel="noopener" href="https://ionicframework.com/docs/">docs</a> will be your guide.</p>
-    <ion-button (click)="testPlugin()" color='primary' size="large">Test Video PlayerPlugin</ion-button>
+    <ion-button (click)="testPlugin()" color='primary' size="large">Test Fullscreen Video</ion-button>
+    <ion-button *ngIf="platform" [href]="'./embedded'" routerDirection="forward" color='primary' size="large">Test Embedded Videos</ion-button>
   </div>
 </ion-content>

@@ -4,6 +4,7 @@ import android.os.Bundle;
 
 import com.getcapacitor.BridgeActivity;
 import com.getcapacitor.Plugin;
+
 import com.jeep.plugin.capacitor.videoplayer.CapacitorVideoPlayer;
 
 import java.util.ArrayList;
