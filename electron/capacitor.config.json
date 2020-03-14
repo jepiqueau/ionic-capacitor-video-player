@@ -1,7 +1,0 @@
-{
-  "appId": "com.jeep.app.ioniccapacitorvideoplayer",
-  "appName": "IonicCapacitorVideoPlayer",
-  "bundledWebRuntime": false,
-  "npmClient": "npm",
-  "webDir": "www"
-}
